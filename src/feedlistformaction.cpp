@@ -449,6 +449,22 @@ REDO:
 				qna, OP_INT_START_SEARCH, &searchhistory);
 		}
 		break;
+	case OP_GOTO:
+		if (automatic && args->size() > 0) {
+			qna_responses.clear();
+			// when in automatic mode, we manually fill the
+			// qna_responses vector from the arguments and then run
+			// the finished_qna() by ourselves to simulate a "Q&A"
+			// session that is in fact macro-driven.
+			qna_responses.push_back((*args)[0]);
+			finished_qna(OP_INT_START_GOTO);
+		} else {
+			std::vector<QnaPair> qna;
+			qna.push_back(QnaPair(_("Search for: "), ""));
+			this->start_qna(
+				qna, OP_INT_START_GOTO);
+		}
+		break;
 	case OP_CLEARFILTER:
 		apply_filter =
 			!(cfg->get_configvalue_as_bool("show-read-feeds"));
@@ -817,6 +833,9 @@ void FeedListFormAction::finished_qna(Operation op)
 	case OP_INT_START_SEARCH:
 		op_start_search();
 		break;
+	case OP_INT_START_GOTO:
+		op_start_goto();
+		break;
 	default:
 		break;
 	}
@@ -934,6 +953,18 @@ void FeedListFormAction::op_start_search()
 		} else {
 			v->show_error(_("No results."));
 		}
+	}
+}
+
+void FeedListFormAction::op_start_goto()
+{
+	std::string searchphrase = qna_responses[0];
+	LOG(Level::DEBUG,
+		"FeedListFormAction::op_start_goto: starting search for "
+		"`%s'",
+		searchphrase);
+	if (searchphrase.length() > 0) {
+                goto_feed(_(searchphrase.c_str()));
 	}
 }
 

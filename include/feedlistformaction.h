@@ -66,6 +66,7 @@ private:
 
 	void op_end_setfilter();
 	void op_start_search();
+  	void op_start_goto();
 
 	void handle_cmdline_num(unsigned int idx);
 
