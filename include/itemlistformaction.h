@@ -88,6 +88,8 @@ private:
 		const std::string& url);
 	int get_pos(unsigned int idx);
 
+	void command_save(std::vector<std::string> tokens);
+
 	void save_article(const std::string& filename,
 		std::shared_ptr<RssItem> item);
 

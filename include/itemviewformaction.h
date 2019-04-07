@@ -62,6 +62,8 @@ private:
 		unsigned int total);
 	void highlight_text(const std::string& searchphrase);
 
+	void command_save(std::vector<std::string> tokens);
+
 	void render_source(std::vector<std::pair<LineType, std::string>>& lines,
 		std::string source);
 

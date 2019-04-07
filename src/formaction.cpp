@@ -247,7 +247,24 @@ void FormAction::handle_cmdline(const std::string& cmdline)
 		std::string cmd = tokens[0];
 		tokens.erase(tokens.begin());
 		if (cmd == "set") {
-			if (tokens.empty()) {
+		        command_set(tokens);
+		} else if (cmd == "q" || cmd == "quit") {
+		        command_quit();
+		} else if (cmd == "source") {
+		        command_source(tokens);
+		} else if (cmd == "dumpconfig") {
+		        command_dumpconfig(tokens);
+		} else if (cmd == "dumpform") {
+       		        command_dumpform();
+		} else {
+			v->show_error(strprintf::fmt(
+				_("Not a command: %s"), cmdline));
+		}
+	}
+}
+
+void FormAction::command_set(std::vector<std::string> tokens) {
+  			if (tokens.empty()) {
 				v->show_error(
 					_("usage: set <variable>[=<value>]"));
 			} else if (tokens.size() == 1) {
@@ -282,12 +299,16 @@ void FormAction::handle_cmdline(const std::string& cmdline)
 				v->show_error(
 					_("usage: set <variable>[=<value>]"));
 			}
-		} else if (cmd == "q" || cmd == "quit") {
-			while (v->formaction_stack_size() > 0) {
+}
+
+void FormAction::command_quit() {
+  			while (v->formaction_stack_size() > 0) {
 				v->pop_current_formaction();
 			}
-		} else if (cmd == "source") {
-			if (tokens.empty()) {
+}
+
+void FormAction::command_source(std::vector<std::string> tokens) {
+  if (tokens.empty()) {
 				v->show_error(_("usage: source <file> [...]"));
 			} else {
 				for (const auto& token : tokens) {
@@ -301,8 +322,10 @@ void FormAction::handle_cmdline(const std::string& cmdline)
 					}
 				}
 			}
-		} else if (cmd == "dumpconfig") {
-			if (tokens.size() != 1) {
+}
+
+void FormAction::command_dumpconfig(std::vector<std::string> tokens) {
+  			if (tokens.size() != 1) {
 				v->show_error(_("usage: dumpconfig <file>"));
 			} else {
 				v->get_ctrl()->dump_config(
@@ -311,13 +334,11 @@ void FormAction::handle_cmdline(const std::string& cmdline)
 					_("Saved configuration to %s"),
 					tokens[0]));
 			}
-		} else if (cmd == "dumpform") {
-			v->dump_current_form();
-		} else {
-			v->show_error(strprintf::fmt(
-				_("Not a command: %s"), cmdline));
-		}
-	}
+}
+
+
+void FormAction::command_dumpform() {
+	v->dump_current_form();
 }
 
 void FormAction::start_qna(const std::vector<QnaPair>& prompts,

@@ -62,6 +62,9 @@ private:
 
 	void goto_feed(const std::string& str);
 
+	void command_tag(std::vector<std::string> tokens);
+	void command_goto(std::vector<std::string> tokens);
+
 	void save_filterpos();
 
 	void op_end_setfilter();

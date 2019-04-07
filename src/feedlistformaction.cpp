@@ -790,20 +790,28 @@ void FeedListFormAction::handle_cmdline(const std::string& cmd)
 			utils::tokenize_quoted(cmd, " \t");
 		if (!tokens.empty()) {
 			if (tokens[0] == "tag") {
-				if (tokens.size() >= 2 && tokens[1] != "") {
-					tag = tokens[1];
-					do_redraw = true;
-					zero_feedpos = true;
-				}
+			  command_tag(tokens);
 			} else if (tokens[0] == "goto") {
-				if (tokens.size() >= 2 && tokens[1] != "") {
-					goto_feed(tokens[1]);
-				}
+			  command_goto(tokens);
 			} else {
 				FormAction::handle_cmdline(cmd);
 			}
 		}
 	}
+}
+
+void FeedListFormAction::command_tag(std::vector<std::string> tokens) {
+  				if (tokens.size() >= 2 && tokens[1] != "") {
+					tag = tokens[1];
+					do_redraw = true;
+					zero_feedpos = true;
+				}
+}
+
+void FeedListFormAction::command_goto(std::vector<std::string> tokens) {
+  				if (tokens.size() >= 2 && tokens[1] != "") {
+					goto_feed(tokens[1]);
+				}
 }
 
 void FeedListFormAction::finished_qna(Operation op)

@@ -458,7 +458,16 @@ void ItemViewFormAction::handle_cmdline(const std::string& cmd)
 	std::vector<std::string> tokens = utils::tokenize_quoted(cmd);
 	if (!tokens.empty()) {
 		if (tokens[0] == "save" && tokens.size() >= 2) {
-			std::string filename = utils::resolve_tilde(tokens[1]);
+			command_save(tokens);
+
+		} else {
+			FormAction::handle_cmdline(cmd);
+		}
+	}
+}
+
+void ItemViewFormAction::command_save(std::vector<std::string> tokens) {
+				std::string filename = utils::resolve_tilde(tokens[1]);
 
 			if (filename == "") {
 				v->show_error(_("Aborted saving."));
@@ -476,11 +485,6 @@ void ItemViewFormAction::handle_cmdline(const std::string& cmd)
 						filename));
 				}
 			}
-
-		} else {
-			FormAction::handle_cmdline(cmd);
-		}
-	}
 }
 
 void ItemViewFormAction::finished_qna(Operation op)

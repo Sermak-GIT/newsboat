@@ -113,6 +113,12 @@ private:
 	std::string prepare_keymap_hint(KeyMapHintEntry* hints);
 	void start_next_question();
 
+	void command_set(std::vector<std::string> tokens);
+	void command_quit();
+	void command_source(std::vector<std::string> tokens);
+	void command_dumpconfig(std::vector<std::string> tokens);
+	void command_dumpform();
+
 	std::vector<QnaPair> qna_prompts;
 	Operation finish_operation;
 	History* qna_history;

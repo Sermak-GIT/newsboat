@@ -97,7 +97,7 @@ void DialogsFormAction::process_operation(Operation op,
 					  "list!"));
 			}
 		} else {
-			v->show_error(_("No item selected!"));
+		        v->show_error(_("No item selected!"));
 		}
 	} break;
 	case OP_QUIT:

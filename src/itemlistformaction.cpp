@@ -1222,7 +1222,15 @@ void ItemListFormAction::handle_cmdline(const std::string& cmd)
 		if (tokens.empty())
 			return;
 		if (tokens[0] == "save" && tokens.size() >= 2) {
-			std::string filename = utils::resolve_tilde(tokens[1]);
+		  command_save(tokens);
+		} else {
+			FormAction::handle_cmdline(cmd);
+		}
+	}
+}
+
+void ItemListFormAction::command_save(std::vector<std::string> tokens) {
+  			std::string filename = utils::resolve_tilde(tokens[1]);
 			std::string itemposname = f->get("itempos");
 			LOG(Level::INFO,
 				"ItemListFormAction::handle_cmdline: saving "
@@ -1237,10 +1245,6 @@ void ItemListFormAction::handle_cmdline(const std::string& cmd)
 			} else {
 				v->show_error(_("Error: no item selected!"));
 			}
-		} else {
-			FormAction::handle_cmdline(cmd);
-		}
-	}
 }
 
 int ItemListFormAction::get_pos(unsigned int realidx)
